@@ -1,0 +1,3 @@
+/home/eugeny/workspace/teplovizor/project/CMakeFiles/rebuild_cache.dir
+/home/eugeny/workspace/teplovizor/project/CMakeFiles/edit_cache.dir
+/home/eugeny/workspace/teplovizor/project/CMakeFiles/sample.dir
