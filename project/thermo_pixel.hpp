@@ -7,7 +7,8 @@ class thermo_pixel
 {
 private:
 
-    struct point position;
+    int x;
+    int y;
     int brightness;
     double temperature;
     
