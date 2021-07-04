@@ -7,8 +7,7 @@ class thermo_pixel
 {
 private:
 
-    int x;
-    int y;
+    point position;
     int brightness;
     double temperature;
     
