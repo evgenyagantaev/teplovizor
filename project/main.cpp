@@ -5,48 +5,67 @@ using namespace cv;
 //***
 
 //Mouse callback
-void draw_cross(Mat *img, int i, int j, uint8_t brightness);
+void draw_cross(Mat img, int i, int j, uint8_t brightness);
 static void onMouse( int event, int x, int y, int, void* userInput );
 
 //***
 
 
 
-current_thermo_frame curr_frame;
-marked_thermo_frame marked_frame;
+//*****************************************************************************************
+//*****************************************************************************************
+//*****************************************************************************************
+//*****************************************************************************************
+//*****************************************************************************************
 
 
 
 int main( int argc, const char** argv )
 {
+    current_thermo_frame curr_frame;
+    marked_thermo_frame marked_frame;
     
     curr_frame.capture_frame();
     Mat curr_frame_mat = curr_frame.get_frame_mat();
+    marked_frame.set_mark_canvas(curr_frame_mat);
 
     imshow("manual mark window", curr_frame_mat);
 
-    setMouseCallback("manual mark window", onMouse, &curr_frame_mat);
-
-    marked_frame.mark_frame(curr_frame);
+    setMouseCallback("manual mark window", onMouse, &marked_frame);
 
     waitKey(0);  
     return 0;
 }
 
+
+
+//*****************************************************************************************
+//*****************************************************************************************
+//*****************************************************************************************
+//*****************************************************************************************
+//*****************************************************************************************
+
+
+
+
+
+
 //Mouse callback
 //*
 static void onMouse( int event, int x, int y, int, void* userInput )
 {
-    Mat *dst = (Mat *)userInput;
+    marked_thermo_frame *marked_frame = (marked_thermo_frame *)userInput;
 
     if( event == EVENT_LBUTTONDOWN )
     {
+        Mat dst = marked_frame->get_mark_canvas();
     
         draw_cross(dst, y, x, BLACK);
-        cout << "pixel[" << y << "," << x << "] -> " << (int)dst->at<uchar>(y,x) << endl;
+        cout << "pixel[" << y << "," << x << "] -> " << (int)dst.at<uchar>(y,x) << endl;
+        marked_frame->mark_frame(dst, x, y);
 
         // Show the result
-        imshow("manual mark window", *dst);
+        //imshow("manual mark window", *dst);
 
     }
 
@@ -54,23 +73,23 @@ static void onMouse( int event, int x, int y, int, void* userInput )
  //*/
 
 
-void draw_cross(Mat *img, int i, int j, uint8_t brightness)
+void draw_cross(Mat img, int i, int j, uint8_t brightness)
 {
-    if((i>2) && (j>2) && (i<(img->rows - 3)) && (j<(img->cols - 3)))
+    if((i>2) && (j>2) && (i<(img.rows - 3)) && (j<(img.cols - 3)))
     {
         //img->at<uchar>(i,j) = brightness;
-        img->at<uchar>(i-1,j) = brightness;
-        img->at<uchar>(i-2,j) = brightness;
-        img->at<uchar>(i-3,j) = brightness;
-        img->at<uchar>(i+1,j) = brightness;
-        img->at<uchar>(i+2,j) = brightness;
-        img->at<uchar>(i+3,j) = brightness;
-        img->at<uchar>(i,j-1) = brightness;
-        img->at<uchar>(i,j-2) = brightness;
-        img->at<uchar>(i,j-3) = brightness;
-        img->at<uchar>(i,j+1) = brightness;
-        img->at<uchar>(i,j+2) = brightness;
-        img->at<uchar>(i,j+3) = brightness;
+        img.at<uchar>(i-1,j) = brightness;
+        img.at<uchar>(i-2,j) = brightness;
+        img.at<uchar>(i-3,j) = brightness;
+        img.at<uchar>(i+1,j) = brightness;
+        img.at<uchar>(i+2,j) = brightness;
+        img.at<uchar>(i+3,j) = brightness;
+        img.at<uchar>(i,j-1) = brightness;
+        img.at<uchar>(i,j-2) = brightness;
+        img.at<uchar>(i,j-3) = brightness;
+        img.at<uchar>(i,j+1) = brightness;
+        img.at<uchar>(i,j+2) = brightness;
+        img.at<uchar>(i,j+3) = brightness;
     }
     
 }
