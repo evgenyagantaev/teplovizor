@@ -17,6 +17,8 @@ private:
 
     void mark_frame_manually(current_thermo_frame frame_to_mark);
     
+    //Mouse callback
+    static void onMouse( int event, int x, int y, int, void* userInput );
     
 public:
 
