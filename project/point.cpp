@@ -11,7 +11,7 @@ point::point()
 
 point::point(int X, int Y)
 {
-    set_point(X, Y)
+    set_point(X, Y);
 }
 
 int point::getx()

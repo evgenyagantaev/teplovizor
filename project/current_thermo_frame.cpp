@@ -23,3 +23,9 @@ void current_thermo_frame::show_frame(void)
     namedWindow("frame", WINDOW_NORMAL);
     imshow("frame", frame);
 }
+
+
+cv::Mat current_thermo_frame::get_frame_mat(void)
+{
+    return current_thermo_frame::frame;
+}

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "thermometry.hpp"
+
 
 class brightness_to_temperature_converter
 {

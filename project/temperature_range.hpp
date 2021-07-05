@@ -1,6 +1,6 @@
 #pragma once
 
-#include "thermometry.hpp"
+
 
 
 class temperature_range

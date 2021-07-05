@@ -1,6 +1,6 @@
 #pragma once
 
-#include "thermometry.hpp"
+#include "point.hpp"
 
 
 class thermo_pixel
@@ -12,7 +12,6 @@ private:
     double temperature;
     
 public:
-    thermo_pixel();
-    ~thermo_pixel();
+    
 };
 
