@@ -20,7 +20,6 @@
 
 
 
-using namespace cv;
 
 class marked_thermo_frame
 {
@@ -36,7 +35,8 @@ private:
 
     brightness_to_temperature_converter converter;
 
-    Mat mark_canvas;
+    cv::Mat mark_canvas;
+    cv::Mat thermal_field;
 
     bool marked;
 
@@ -53,7 +53,7 @@ public:
     void mark_frame(cv::Mat frame_to_mark, int x, int y);
 
     void set_mark_canvas(cv::Mat value);
-    Mat get_mark_canvas(void);
+    cv::Mat get_mark_canvas(void);
     
     bool is_marked(void);
     void unmark(void);

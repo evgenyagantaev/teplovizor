@@ -9,9 +9,10 @@ marked_thermo_frame::marked_thermo_frame(void)
     marked = false;
 }
 
-void marked_thermo_frame::set_mark_canvas(cv::Mat value)
+void marked_thermo_frame::set_mark_canvas(Mat value)
 {
     mark_canvas = value;
+    thermal_field = mark_canvas.clone();
 }
 
 Mat marked_thermo_frame::get_mark_canvas(void)
@@ -77,6 +78,23 @@ void marked_thermo_frame::mark_frame(cv::Mat frame_to_mark, int x, int y)
                             background_base_pixel.get_brightness(), background_base_pixel.get_temperature());
 
         marked = true;
+
+        int eyes_span = left_eye_center.getx() - right_eye_center.getx();
+        int eye_spot_width = (int)(eyes_span * EYE_WIDTH_COEFF);
+        int eye_spot_height = eye_spot_width;
+        int eye_spot_base_horizontal_offset = eye_spot_width;
+        int eye_spot_base_vertical_offset = (int)(eye_spot_width/2);
+
+        left_eye_spot.set_base(left_eye_center.getx() - eye_spot_base_horizontal_offset, left_eye_center.gety() - eye_spot_base_vertical_offset);
+        left_eye_spot.set_width(eye_spot_width);
+        left_eye_spot.set_height(eye_spot_height);
+
+        int i;
+        for(i=0; i<8; i++)
+        {
+            left_eye_spot.generate();
+        }
+
     }
 }
 

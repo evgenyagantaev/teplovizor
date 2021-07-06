@@ -1,5 +1,10 @@
 #pragma once
 
+#include <iostream>
+#include <string>
+#include <sstream>
+
+#include "opencv_headers.hpp"
 #include "point.hpp"
 
 class rect_thermal_spot
@@ -9,6 +14,8 @@ private:
     point base_point;
     int width;
     int height;
+
+    cv::RNG random_generator;
     
 public:
 
@@ -19,6 +26,8 @@ public:
     point get_base(void);
     int get_width(void);
     int get_height(void);
+
+    point generate();
 
 };
 
