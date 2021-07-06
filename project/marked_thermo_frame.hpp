@@ -10,9 +10,14 @@
 #include "thermo_pixel.hpp"
 #include "brightness_to_temperature_converter.hpp"
 #include "current_thermo_frame.hpp"
+#include "rect_thermal_spot.hpp"
 
 #define DEFAULT_ABB_TEMPERATURE 42
 #define DEFAULT_BACKGROUND_TEMPERATURE 27
+
+#define EYE_WIDTH_COEFF  (3.0 / 8.0)
+#define EYE_HEIGHT_COEFF (3.0 / 8.0)
+
 
 
 using namespace cv;
@@ -25,12 +30,15 @@ private:
     point right_eye_center;
     thermo_pixel abb_base_pixel;
     thermo_pixel background_base_pixel;
+    rect_thermal_spot left_eye_spot;
 
     int manual_mark_counter;
 
     brightness_to_temperature_converter converter;
 
     Mat mark_canvas;
+
+    bool marked;
 
     //***
 
@@ -47,6 +55,8 @@ public:
     void set_mark_canvas(cv::Mat value);
     Mat get_mark_canvas(void);
     
+    bool is_marked(void);
+    void unmark(void);
         
 };
 

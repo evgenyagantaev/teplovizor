@@ -62,7 +62,11 @@ static void onMouse( int event, int x, int y, int, void* userInput )
     
         draw_cross(dst, y, x, BLACK);
         cout << "pixel[" << y << "," << x << "] -> " << (int)dst.at<uchar>(y,x) << endl;
-        marked_frame->mark_frame(dst, x, y);
+
+        if(!(marked_frame->is_marked()))
+        {
+            marked_frame->mark_frame(dst, x, y);
+        }
 
         // Show the result
         //imshow("manual mark window", *dst);

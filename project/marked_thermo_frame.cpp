@@ -6,7 +6,7 @@ using namespace std;
 marked_thermo_frame::marked_thermo_frame(void)
 {
     manual_mark_counter = 0;
-
+    marked = false;
 }
 
 void marked_thermo_frame::set_mark_canvas(cv::Mat value)
@@ -75,6 +75,18 @@ void marked_thermo_frame::mark_frame(cv::Mat frame_to_mark, int x, int y)
 
         converter.calibrate(abb_base_pixel.get_brightness(), abb_base_pixel.get_temperature(), 
                             background_base_pixel.get_brightness(), background_base_pixel.get_temperature());
+
+        marked = true;
     }
 }
 
+bool marked_thermo_frame::is_marked(void)
+{
+    return marked;
+}
+
+void marked_thermo_frame::unmark(void)
+{
+    marked = false;
+    manual_mark_counter = 0;
+}
