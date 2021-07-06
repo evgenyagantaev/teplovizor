@@ -7,11 +7,6 @@ marked_thermo_frame::marked_thermo_frame(void)
 {
     manual_mark_counter = 0;
 
-    left_eye_center = point();
-    right_eye_center = point();
-    abb_base_pixel = thermo_pixel();
-    background_base_pixel = thermo_pixel();
-    mark_canvas = cv::Mat();
 }
 
 void marked_thermo_frame::set_mark_canvas(cv::Mat value)
@@ -77,6 +72,9 @@ void marked_thermo_frame::mark_frame(cv::Mat frame_to_mark, int x, int y)
         cout << "mark_frame >> background brightness = " << background_base_pixel.get_brightness() << endl;
         background_base_pixel.set_temperature(DEFAULT_BACKGROUND_TEMPERATURE);
         cout << "mark_frame >> background temperature = " << background_base_pixel.get_temperature() << endl;
+
+        converter.calibrate(abb_base_pixel.get_brightness(), abb_base_pixel.get_temperature(), 
+                            background_base_pixel.get_brightness(), background_base_pixel.get_temperature());
     }
 }
 

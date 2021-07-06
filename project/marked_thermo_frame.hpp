@@ -8,6 +8,7 @@
 
 #include "point.hpp"
 #include "thermo_pixel.hpp"
+#include "brightness_to_temperature_converter.hpp"
 #include "current_thermo_frame.hpp"
 
 #define DEFAULT_ABB_TEMPERATURE 42
@@ -26,6 +27,8 @@ private:
     thermo_pixel background_base_pixel;
 
     int manual_mark_counter;
+
+    brightness_to_temperature_converter converter;
 
     Mat mark_canvas;
 

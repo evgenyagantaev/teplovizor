@@ -3,7 +3,6 @@
 
 thermo_pixel::thermo_pixel()
 {
-    position = point();
     brightness = UNREAL_BRIGHTNESS;
     temperature = UNREAL_TEMPERATURE;
 }

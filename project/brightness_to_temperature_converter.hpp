@@ -1,6 +1,8 @@
 #pragma once
 
-
+#include <iostream>
+#include <string>
+#include <sstream>
 
 class brightness_to_temperature_converter
 {
@@ -18,7 +20,6 @@ public:
 
     void calibrate(int abb_brigthness, double abb_temperature, int background_brightness, double background_temperature);
 
-    brightness_to_temperature_converter(/* args */);
-    ~brightness_to_temperature_converter();
+    double convert(int brightness);
 };
 
