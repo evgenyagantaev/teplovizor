@@ -1,7 +1,19 @@
 #include "rect_thermal_spot.hpp"
 
 using namespace cv;
-using namespace std;
+using namespace std;   
+
+rect_thermal_spot::rect_thermal_spot()
+{
+    time_t rawtime;
+    tm * ptm;
+    time (&rawtime);
+    rng_seed = (uint64_t)rawtime;
+    random_generator = RNG(rng_seed);
+
+    cout << "random generator seed >> " << rng_seed << endl;
+    
+}
 
 void rect_thermal_spot::set_base(int x, int y)
 {

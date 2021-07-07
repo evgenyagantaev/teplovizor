@@ -16,8 +16,11 @@ private:
     int height;
 
     cv::RNG random_generator;
+    uint64_t rng_seed;
     
 public:
+
+    rect_thermal_spot();
 
     void set_base(int x, int y);
     void set_width(int value);

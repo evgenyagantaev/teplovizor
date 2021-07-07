@@ -7,5 +7,5 @@ MESSAGE("OpenCV version : ${OpenCV_VERSION}")
 include_directories(${OpenCV_INCLUDE_DIRS})
 link_directories(${OpenCV_LIB_DIR})
 ADD_EXECUTABLE( sample main.cpp current_thermo_frame.cpp marked_thermo_frame.cpp point.cpp thermo_pixel.cpp 
-                brightness_to_temperature_converter.cpp rect_thermal_spot.cpp)
+                brightness_to_temperature_converter.cpp rect_thermal_spot.cpp utilities.cpp)
 TARGET_LINK_LIBRARIES( sample ${OpenCV_LIBS} )

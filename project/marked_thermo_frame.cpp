@@ -7,6 +7,8 @@ marked_thermo_frame::marked_thermo_frame(void)
 {
     manual_mark_counter = 0;
     marked = false;
+    namedWindow("manual mark window", WINDOW_NORMAL);
+    
 }
 
 void marked_thermo_frame::set_mark_canvas(Mat value)
@@ -47,12 +49,18 @@ void marked_thermo_frame::mark_frame(cv::Mat frame_to_mark, int x, int y)
         left_eye_center.set_point(x, y);
         manual_mark_counter++;
         cout << "mark_frame >> left eye position = " << left_eye_center.getx() << "   " << left_eye_center.gety() << endl;
+
+        draw_cross(mark_canvas, y, x, BLACK);
+        imshow("manual mark window", mark_canvas);
     }
     else if(manual_mark_counter == 1) 
     {
         right_eye_center.set_point(x, y);
         manual_mark_counter++;
         cout << "mark_frame >> right eye position = " << right_eye_center.getx() << "   " << right_eye_center.gety() << endl;
+
+        draw_cross(mark_canvas, y, x, BLACK);
+        imshow("manual mark window", mark_canvas);
     }
     else if(manual_mark_counter == 2) 
     {
@@ -63,6 +71,9 @@ void marked_thermo_frame::mark_frame(cv::Mat frame_to_mark, int x, int y)
         cout << "mark_frame >> abb brightness = " << abb_base_pixel.get_brightness() << endl;
         abb_base_pixel.set_temperature(DEFAULT_ABB_TEMPERATURE);
         cout << "mark_frame >> abb temperature = " << abb_base_pixel.get_temperature() << endl;
+
+        draw_cross(mark_canvas, y, x, BLACK);
+        imshow("manual mark window", mark_canvas);
     }
     else if(manual_mark_counter == 3) 
     {
@@ -73,6 +84,9 @@ void marked_thermo_frame::mark_frame(cv::Mat frame_to_mark, int x, int y)
         cout << "mark_frame >> background brightness = " << background_base_pixel.get_brightness() << endl;
         background_base_pixel.set_temperature(DEFAULT_BACKGROUND_TEMPERATURE);
         cout << "mark_frame >> background temperature = " << background_base_pixel.get_temperature() << endl;
+
+        draw_cross(mark_canvas, y, x, BLACK);
+        imshow("manual mark window", mark_canvas);
 
         converter.calibrate(abb_base_pixel.get_brightness(), abb_base_pixel.get_temperature(), 
                             background_base_pixel.get_brightness(), background_base_pixel.get_temperature());
@@ -92,7 +106,9 @@ void marked_thermo_frame::mark_frame(cv::Mat frame_to_mark, int x, int y)
         int i;
         for(i=0; i<8; i++)
         {
-            left_eye_spot.generate();
+            point random_point = left_eye_spot.generate();
+            draw_cross(mark_canvas, random_point.gety(), random_point.getx(), BLACK);
+            imshow("manual mark window", mark_canvas);
         }
 
     }

@@ -12,6 +12,8 @@
 #include "current_thermo_frame.hpp"
 #include "rect_thermal_spot.hpp"
 
+#include "utilities.hpp"
+
 #define DEFAULT_ABB_TEMPERATURE 42
 #define DEFAULT_BACKGROUND_TEMPERATURE 27
 
