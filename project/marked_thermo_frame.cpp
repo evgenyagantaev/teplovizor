@@ -106,9 +106,21 @@ void marked_thermo_frame::mark_frame(cv::Mat frame_to_mark, int x, int y)
         int i;
         for(i=0; i<8; i++)
         {
+            
             point random_point = left_eye_spot.generate();
             draw_cross(mark_canvas, random_point.gety(), random_point.getx(), BLACK);
             imshow("manual mark window", mark_canvas);
+
+            thermo_pixel random_pixel;
+            random_pixel.set_position(random_point.getx(), random_point.gety());
+            random_pixel.set_brightness((int)thermal_field.at<uchar>(random_point.gety(),random_point.getx()));
+            random_pixel.set_temperature(converter.convert(random_pixel.get_brightness()));
+            cout << " >> " << random_pixel.get_temperature() << " << " << endl;
+
+            if(range.check(random_pixel.get_temperature()))
+            {
+                claster.add_pixel(random_pixel);
+            }   
         }
 
     }

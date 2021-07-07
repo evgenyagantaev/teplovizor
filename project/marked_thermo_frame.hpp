@@ -8,14 +8,16 @@
 
 #include "point.hpp"
 #include "thermo_pixel.hpp"
+#include "thermo_pixel_vector.hpp"
 #include "brightness_to_temperature_converter.hpp"
+#include "temperature_range.hpp"
 #include "current_thermo_frame.hpp"
 #include "rect_thermal_spot.hpp"
 
 #include "utilities.hpp"
 
-#define DEFAULT_ABB_TEMPERATURE 42
-#define DEFAULT_BACKGROUND_TEMPERATURE 27
+#define DEFAULT_ABB_TEMPERATURE 40
+#define DEFAULT_BACKGROUND_TEMPERATURE 25
 
 #define EYE_WIDTH_COEFF  (3.0 / 8.0)
 #define EYE_HEIGHT_COEFF (3.0 / 8.0)
@@ -31,7 +33,10 @@ private:
     point right_eye_center;
     thermo_pixel abb_base_pixel;
     thermo_pixel background_base_pixel;
+    thermo_pixel_vector claster;
     rect_thermal_spot left_eye_spot;
+
+    temperature_range range;
 
     int manual_mark_counter;
 

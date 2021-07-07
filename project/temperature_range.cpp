@@ -14,6 +14,3 @@ bool temperature_range::check(double temperature)
         return false;
 }
 
-temperature_range::~temperature_range()
-{
-}
