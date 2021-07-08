@@ -22,7 +22,7 @@ using namespace std;
 #include "thermo_pixel_vector.hpp"
 #include "marked_thermo_frame.hpp"
 
-
+#include "unistd.h"
 
 
 class thermometry

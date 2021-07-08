@@ -35,6 +35,8 @@ int main( int argc, const char** argv )
     setMouseCallback("manual mark window", onMouse, &marked_frame);
 
     waitKey(0);  
+    
+
     return 0;
 }
 

@@ -15,12 +15,17 @@
 #include "rect_thermal_spot.hpp"
 
 #include "utilities.hpp"
+#include "unistd.h"
 
-#define DEFAULT_ABB_TEMPERATURE 40
-#define DEFAULT_BACKGROUND_TEMPERATURE 25
+#define DEFAULT_ABB_TEMPERATURE 41
+#define DEFAULT_BACKGROUND_TEMPERATURE 27
 
 #define EYE_WIDTH_COEFF  (3.0 / 8.0)
 #define EYE_HEIGHT_COEFF (3.0 / 8.0)
+
+#define PRIMARY_RANDOM_POINTS_NUMBER 8
+#define SECONDARY_RANDOM_POINTS_NUMBER 3
+#define SECONDARY_BASES_NUMBER 3
 
 
 
@@ -34,6 +39,7 @@ private:
     thermo_pixel abb_base_pixel;
     thermo_pixel background_base_pixel;
     thermo_pixel_vector claster;
+    thermo_pixel_vector secondary_layer_bases;
     rect_thermal_spot left_eye_spot;
 
     temperature_range range;

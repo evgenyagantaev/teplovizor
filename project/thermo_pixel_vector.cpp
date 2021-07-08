@@ -56,3 +56,13 @@ void thermo_pixel_vector::shift(int index)
         up_index--;
     }
 }
+
+int thermo_pixel_vector::get_current_length()
+{
+    return current_length;
+}
+
+thermo_pixel thermo_pixel_vector::get_pixel(int index)
+{
+    return vector[index];
+}

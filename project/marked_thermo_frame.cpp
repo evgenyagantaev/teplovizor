@@ -104,12 +104,12 @@ void marked_thermo_frame::mark_frame(cv::Mat frame_to_mark, int x, int y)
         left_eye_spot.set_height(eye_spot_height);
 
         int i;
-        for(i=0; i<8; i++)
+        for(i=0; i<PRIMARY_RANDOM_POINTS_NUMBER; i++)
         {
             
             point random_point = left_eye_spot.generate();
-            draw_cross(mark_canvas, random_point.gety(), random_point.getx(), BLACK);
-            imshow("manual mark window", mark_canvas);
+            //draw_cross(mark_canvas, random_point.gety(), random_point.getx(), BLACK);
+            //imshow("manual mark window", mark_canvas);
 
             thermo_pixel random_pixel;
             random_pixel.set_position(random_point.getx(), random_point.gety());
@@ -121,6 +121,76 @@ void marked_thermo_frame::mark_frame(cv::Mat frame_to_mark, int x, int y)
             {
                 claster.add_pixel(random_pixel);
             }   
+        }
+
+        int k;
+        for(k=0; k<PRIMARY_RANDOM_POINTS_NUMBER; k++)
+        {
+            point cross_position = claster.get_pixel(k).get_position();
+            draw_cross(mark_canvas, cross_position.gety(), cross_position.getx(), BLACK);
+        }
+        imshow("manual mark window", mark_canvas);
+
+        
+        sleep(3);
+        
+
+        if(claster.get_current_length() >= SECONDARY_BASES_NUMBER)
+        {
+            int i;
+            for(i=0; i<SECONDARY_BASES_NUMBER; i++)
+            {
+                secondary_layer_bases.add_pixel(claster.get_pixel(i));
+            }
+
+            for(i=0; i<SECONDARY_BASES_NUMBER; i++)
+            {
+                int x = secondary_layer_bases.get_pixel(i).get_position().getx();
+                int y = secondary_layer_bases.get_pixel(i).get_position().gety();
+
+                cout << i << " >> secondary base " << endl;
+
+                int width = (int)(eye_spot_width / 2);
+                int height = width;
+                int horizontal_offset = (int)(width / 2);
+                int vertical_offset = horizontal_offset;
+
+                left_eye_spot.set_base(x - horizontal_offset, y - vertical_offset);
+                left_eye_spot.set_width(width);
+                left_eye_spot.set_height(height);
+
+                int j;
+                for(j=0; j<SECONDARY_RANDOM_POINTS_NUMBER; j++)
+                {
+                    
+                    point random_point = left_eye_spot.generate();
+                    //draw_cross(mark_canvas, random_point.gety(), random_point.getx(), BLACK);
+                    //imshow("manual mark window", mark_canvas);
+
+                    thermo_pixel random_pixel;
+                    random_pixel.set_position(random_point.getx(), random_point.gety());
+                    random_pixel.set_brightness((int)thermal_field.at<uchar>(random_point.gety(),random_point.getx()));
+                    random_pixel.set_temperature(converter.convert(random_pixel.get_brightness()));
+                    cout << " >> secondary random " << random_pixel.get_temperature() << " << " << endl;
+
+                    if(range.check(random_pixel.get_temperature()))
+                    {
+                        claster.add_pixel(random_pixel);
+                        cout << "claster length = " << claster.get_current_length() << endl;
+                    }   
+                }
+
+                for(k=0; k<PRIMARY_RANDOM_POINTS_NUMBER; k++)
+                {
+                    point cross_position = claster.get_pixel(k).get_position();
+                    draw_cross(mark_canvas, cross_position.gety(), cross_position.getx(), BLACK);
+                }
+                imshow("manual mark window", mark_canvas);
+
+                sleep(3);
+                
+
+            }
         }
 
     }

@@ -1,7 +1,7 @@
 #pragma once
 
-#define TEMPERATURE_LOW_BOUND 34
-#define TEMPERATURE_UP_BOUND 38
+#define TEMPERATURE_LOW_BOUND 33
+#define TEMPERATURE_UP_BOUND 40
 
 
 class temperature_range
