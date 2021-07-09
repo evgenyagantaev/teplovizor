@@ -15,6 +15,8 @@ void marked_thermo_frame::set_mark_canvas(Mat value)
 {
     mark_canvas = value;
     thermal_field = mark_canvas.clone();
+
+    putText(mark_canvas, "mark left eye", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
 }
 
 Mat marked_thermo_frame::get_mark_canvas(void)
@@ -50,6 +52,8 @@ void marked_thermo_frame::mark_frame(cv::Mat frame_to_mark, int x, int y)
         manual_mark_counter++;
         cout << "mark_frame >> left eye position = " << left_eye_center.getx() << "   " << left_eye_center.gety() << endl;
 
+        mark_canvas = thermal_field.clone();
+        putText(mark_canvas, "mark right eye", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
         draw_cross(mark_canvas, y, x, BLACK);
         imshow("manual mark window", mark_canvas);
     }
@@ -59,6 +63,8 @@ void marked_thermo_frame::mark_frame(cv::Mat frame_to_mark, int x, int y)
         manual_mark_counter++;
         cout << "mark_frame >> right eye position = " << right_eye_center.getx() << "   " << right_eye_center.gety() << endl;
 
+        mark_canvas = thermal_field.clone();
+        putText(mark_canvas, "mark ABB", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
         draw_cross(mark_canvas, y, x, BLACK);
         imshow("manual mark window", mark_canvas);
     }
@@ -72,6 +78,8 @@ void marked_thermo_frame::mark_frame(cv::Mat frame_to_mark, int x, int y)
         abb_base_pixel.set_temperature(DEFAULT_ABB_TEMPERATURE);
         cout << "mark_frame >> abb temperature = " << abb_base_pixel.get_temperature() << endl;
 
+        mark_canvas = thermal_field.clone();
+        putText(mark_canvas, "mark background", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
         draw_cross(mark_canvas, y, x, BLACK);
         imshow("manual mark window", mark_canvas);
     }
@@ -113,6 +121,7 @@ void marked_thermo_frame::detect_temperature(void)
 {
 
     mark_canvas = thermal_field.clone();
+    putText(mark_canvas, "primary layer random points", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
     imshow("manual mark window", mark_canvas);
     waitKey(100);
 
@@ -175,6 +184,7 @@ void marked_thermo_frame::detect_temperature(void)
             point p = secondary_layer_bases.get_pixel(i).get_position();
             draw_cross(mark_canvas, p.gety(), p.getx(), BLACK);
         }
+        putText(mark_canvas, "secondary layer base points", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
         imshow("manual mark window", mark_canvas);
         waitKey(1000);
          mark_canvas = thermal_field.clone();
@@ -185,6 +195,7 @@ void marked_thermo_frame::detect_temperature(void)
             point p = secondary_layer_bases.get_pixel(i).get_position();
             draw_cross(mark_canvas, p.gety(), p.getx(), BLACK);
         }
+        putText(mark_canvas, "secondary layer base points", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
         imshow("manual mark window", mark_canvas);
         waitKey(1000);
          mark_canvas = thermal_field.clone();
@@ -195,9 +206,11 @@ void marked_thermo_frame::detect_temperature(void)
             point p = secondary_layer_bases.get_pixel(i).get_position();
             draw_cross(mark_canvas, p.gety(), p.getx(), BLACK);
         }
+        putText(mark_canvas, "secondary layer base points", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
         imshow("manual mark window", mark_canvas);
         waitKey(1000);
         mark_canvas = thermal_field.clone();
+        putText(mark_canvas, "secondary layer random points", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
         imshow("manual mark window", mark_canvas);
         waitKey(100);
         //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
@@ -243,11 +256,15 @@ void marked_thermo_frame::detect_temperature(void)
 
             waitKey(2000);
             mark_canvas = thermal_field.clone();
+            putText(mark_canvas, "secondary layer random points", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
             imshow("manual mark window", mark_canvas);
             waitKey(100);
             
 
         }//end   for(i=0; i<SECONDARY_BASES_NUMBER; i++)
+
+        mark_canvas = thermal_field.clone();
+        putText(mark_canvas, "two layers claster", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
 
         int k;
         for(k=0; k<PRIMARY_RANDOM_POINTS_NUMBER; k++)
