@@ -38,9 +38,11 @@ private:
     point right_eye_center;
     thermo_pixel abb_base_pixel;
     thermo_pixel background_base_pixel;
-    thermo_pixel_vector claster;
+    thermo_pixel_vector left_eye_claster;
+    thermo_pixel_vector right_eye_claster;
     thermo_pixel_vector secondary_layer_bases;
     rect_thermal_spot left_eye_spot;
+    rect_thermal_spot right_eye_spot;
 
     temperature_range range;
 
@@ -51,7 +53,15 @@ private:
     cv::Mat mark_canvas;
     cv::Mat thermal_field;
 
+    int eyes_span;
+    int eye_spot_width;
+    int eye_spot_height;
+    int eye_spot_base_horizontal_offset;
+    int eye_spot_base_vertical_offset;
+
     bool marked;
+
+    double detect_temperature(rect_thermal_spot *spot, thermo_pixel_vector *claster);
 
     //***
 
@@ -71,7 +81,9 @@ public:
     bool is_marked(void);
     void unmark(void);
 
-    void detect_temperature(void);
+    double left_eye_detect_temperature();
+
+    
         
 };
 

@@ -99,6 +99,12 @@ void marked_thermo_frame::mark_frame(cv::Mat frame_to_mark, int x, int y)
         converter.calibrate(abb_base_pixel.get_brightness(), abb_base_pixel.get_temperature(), 
                             background_base_pixel.get_brightness(), background_base_pixel.get_temperature());
 
+        eyes_span = left_eye_center.getx() - right_eye_center.getx();
+        eye_spot_width = (int)(eyes_span * EYE_WIDTH_COEFF);
+        eye_spot_height = eye_spot_width;
+        eye_spot_base_horizontal_offset = eye_spot_width;
+        eye_spot_base_vertical_offset = (int)(eye_spot_width/2);
+
         marked = true;
 
 
@@ -117,7 +123,18 @@ void marked_thermo_frame::unmark(void)
     mark_canvas = thermal_field.clone();
 }
 
-void marked_thermo_frame::detect_temperature(void)
+
+double marked_thermo_frame::left_eye_detect_temperature()
+{
+    left_eye_spot.set_base(left_eye_center.getx() - eye_spot_base_horizontal_offset, left_eye_center.gety() - eye_spot_base_vertical_offset);
+    left_eye_spot.set_width(eye_spot_width);
+    left_eye_spot.set_height(eye_spot_height);
+
+    return detect_temperature(&left_eye_spot, &left_eye_claster);
+}
+
+
+double marked_thermo_frame::detect_temperature(rect_thermal_spot *spot, thermo_pixel_vector *claster)
 {
 
     mark_canvas = thermal_field.clone();
@@ -125,21 +142,11 @@ void marked_thermo_frame::detect_temperature(void)
     imshow("manual mark window", mark_canvas);
     waitKey(100);
 
-    int eyes_span = left_eye_center.getx() - right_eye_center.getx();
-    int eye_spot_width = (int)(eyes_span * EYE_WIDTH_COEFF);
-    int eye_spot_height = eye_spot_width;
-    int eye_spot_base_horizontal_offset = eye_spot_width;
-    int eye_spot_base_vertical_offset = (int)(eye_spot_width/2);
-
-    left_eye_spot.set_base(left_eye_center.getx() - eye_spot_base_horizontal_offset, left_eye_center.gety() - eye_spot_base_vertical_offset);
-    left_eye_spot.set_width(eye_spot_width);
-    left_eye_spot.set_height(eye_spot_height);
-
     int i;
     for(i=0; i<PRIMARY_RANDOM_POINTS_NUMBER; i++)
     {
         
-        point random_point = left_eye_spot.generate();
+        point random_point = (*spot).generate();
         draw_cross(mark_canvas, random_point.gety(), random_point.getx(), BLACK);
         imshow("manual mark window", mark_canvas);
         waitKey(700);
@@ -152,7 +159,7 @@ void marked_thermo_frame::detect_temperature(void)
 
         if(range.check(random_pixel.get_temperature()))
         {
-            claster.add_pixel(random_pixel);
+            (*claster).add_pixel(random_pixel);
         }   
     }
 
@@ -165,14 +172,14 @@ void marked_thermo_frame::detect_temperature(void)
     waitKey(100);
     
 
-    if(claster.get_current_length() >= SECONDARY_BASES_NUMBER)
+    if((*claster).get_current_length() >= SECONDARY_BASES_NUMBER)
     {
 
 
         int i;
         for(i=0; i<SECONDARY_BASES_NUMBER; i++)
         {
-            secondary_layer_bases.add_pixel(claster.get_pixel(i));
+            secondary_layer_bases.add_pixel((*claster).get_pixel(i));
         }
 
         //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
@@ -227,15 +234,15 @@ void marked_thermo_frame::detect_temperature(void)
             int horizontal_offset = (int)(width / 2);
             int vertical_offset = horizontal_offset;
 
-            left_eye_spot.set_base(x - horizontal_offset, y - vertical_offset);
-            left_eye_spot.set_width(width);
-            left_eye_spot.set_height(height);
+            (*spot).set_base(x - horizontal_offset, y - vertical_offset);
+            (*spot).set_width(width);
+            (*spot).set_height(height);
 
             int j;
             for(j=0; j<SECONDARY_RANDOM_POINTS_NUMBER; j++)
             {
                 
-                point random_point = left_eye_spot.generate();
+                point random_point = (*spot).generate();
                 draw_cross(mark_canvas, random_point.gety(), random_point.getx(), BLACK);
                 imshow("manual mark window", mark_canvas);
                 waitKey(700);
@@ -248,8 +255,8 @@ void marked_thermo_frame::detect_temperature(void)
 
                 if(range.check(random_pixel.get_temperature()))
                 {
-                    claster.add_pixel(random_pixel);
-                    cout << "claster length = " << claster.get_current_length() << endl;
+                    (*claster).add_pixel(random_pixel);
+                    cout << "claster length = " << (*claster).get_current_length() << endl;
                 } 
                  
             }
@@ -269,12 +276,13 @@ void marked_thermo_frame::detect_temperature(void)
         int k;
         for(k=0; k<PRIMARY_RANDOM_POINTS_NUMBER; k++)
         {
-            point cross_position = claster.get_pixel(k).get_position();
+            point cross_position = (*claster).get_pixel(k).get_position();
             draw_cross(mark_canvas, cross_position.gety(), cross_position.getx(), BLACK);
             imshow("manual mark window", mark_canvas);
             waitKey(700);
         }
     }
 
+    return 36.6;
     
 }

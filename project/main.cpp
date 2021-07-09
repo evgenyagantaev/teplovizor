@@ -40,7 +40,7 @@ int main( int argc, const char** argv )
         waitKey(100);  
     }
 
-    marked_frame.detect_temperature();
+    marked_frame.left_eye_detect_temperature();
 
     waitKey(0);  
     
