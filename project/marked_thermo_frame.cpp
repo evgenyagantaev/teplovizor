@@ -283,6 +283,15 @@ double marked_thermo_frame::detect_temperature(rect_thermal_spot *spot, thermo_p
         }
     }
 
-    return 36.6;
+    double temperature = 0;
+    int index = HEAD_CUT;
+    while (index < (HEAD_CUT + CLASTER_BODY) && (index < (*claster).get_current_length()))
+    {
+        temperature += (*claster).get_pixel(index).get_temperature();
+        index++;
+    }
+    temperature /= CLASTER_BODY;
+    
+    return temperature;
     
 }

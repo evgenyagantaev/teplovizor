@@ -2,6 +2,7 @@
 #include "utilities.hpp"
 
 using namespace cv;
+using namespace std;
 
 //***
 
@@ -35,13 +36,23 @@ int main( int argc, const char** argv )
     setMouseCallback("manual mark window", onMouse, &marked_frame);
 
     // waiting for manual markup completion
+    cout << "manual markup waiting" << endl;
+    waitKey(100);
     while(!marked_frame.is_marked())
     {
         waitKey(100);  
     }
+    
+    cout << "marked" << endl;
+    waitKey(100);
 
-    marked_frame.left_eye_detect_temperature();
+    double left_eye_temp = marked_frame.left_eye_detect_temperature();
 
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    cout << "left eye temp >>>>> " << left_eye_temp << " <<<<<" << endl;  
+    
     waitKey(0);  
     
 
