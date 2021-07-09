@@ -205,4 +205,5 @@ void marked_thermo_frame::unmark(void)
 {
     marked = false;
     manual_mark_counter = 0;
+    mark_canvas = thermal_field.clone();
 }
