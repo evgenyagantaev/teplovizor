@@ -34,10 +34,13 @@ int main( int argc, const char** argv )
 
     setMouseCallback("manual mark window", onMouse, &marked_frame);
 
+    // waiting for manual markup completion
     while(!marked_frame.is_marked())
     {
         waitKey(100);  
     }
+
+    marked_frame.detect_temperature();
 
     waitKey(0);  
     

@@ -71,7 +71,7 @@ public:
     bool is_marked(void);
     void unmark(void);
 
-    
+    void detect_temperature(void);
         
 };
 
