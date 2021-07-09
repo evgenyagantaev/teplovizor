@@ -54,6 +54,15 @@ int main( int argc, const char** argv )
     cout << "left eye temp >>>>> " << left_eye_temp << " <<<<<" << endl;  
     
     waitKey(0);  
+
+    double right_eye_temp = marked_frame.right_eye_detect_temperature();
+
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    cout << "right eye temp >>>>> " << right_eye_temp << " <<<<<" << endl;  
+    
+    waitKey(0);  
     
 
     return 0;

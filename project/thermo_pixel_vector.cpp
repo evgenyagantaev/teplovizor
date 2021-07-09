@@ -66,3 +66,9 @@ thermo_pixel thermo_pixel_vector::get_pixel(int index)
 {
     return vector[index];
 }
+
+
+void thermo_pixel_vector::clean(void)
+{
+    current_length = 0;
+}

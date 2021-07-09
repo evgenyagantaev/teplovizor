@@ -25,6 +25,7 @@ private:
 public:
     thermo_pixel_vector();
 
+    void clean(void);
     void add_pixel(thermo_pixel value);
     int get_current_length();
     thermo_pixel get_pixel(int index);

@@ -85,7 +85,7 @@ public:
     void unmark(void);
 
     double left_eye_detect_temperature();
-
+    double right_eye_detect_temperature();
     
         
 };

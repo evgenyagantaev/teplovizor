@@ -133,6 +133,15 @@ double marked_thermo_frame::left_eye_detect_temperature()
     return detect_temperature(&left_eye_spot, &left_eye_claster);
 }
 
+double marked_thermo_frame::right_eye_detect_temperature()
+{
+    right_eye_spot.set_base(right_eye_center.getx(), right_eye_center.gety() - eye_spot_base_vertical_offset);
+    right_eye_spot.set_width(eye_spot_width);
+    right_eye_spot.set_height(eye_spot_height);
+
+    return detect_temperature(&right_eye_spot, &right_eye_claster);
+}
+
 
 double marked_thermo_frame::detect_temperature(rect_thermal_spot *spot, thermo_pixel_vector *claster)
 {
@@ -175,7 +184,7 @@ double marked_thermo_frame::detect_temperature(rect_thermal_spot *spot, thermo_p
     if((*claster).get_current_length() >= SECONDARY_BASES_NUMBER)
     {
 
-
+        secondary_layer_bases.clean();
         int i;
         for(i=0; i<SECONDARY_BASES_NUMBER; i++)
         {
