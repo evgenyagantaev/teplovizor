@@ -1,5 +1,7 @@
 #include "rect_thermal_spot.hpp"
 
+//#define DEBUG_CONSOLE_OUTPUT
+
 using namespace cv;
 using namespace std;   
 
@@ -11,7 +13,11 @@ rect_thermal_spot::rect_thermal_spot()
     rng_seed = (uint64_t)rawtime;
     random_generator = RNG(rng_seed);
 
+    #ifdef DEBUG_CONSOLE_OUTPUT
+    //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
     cout << "random generator seed >> " << rng_seed << endl;
+    //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+    #endif
     
 }
 
@@ -46,7 +52,11 @@ point rect_thermal_spot::generate()
     int x = random_generator.uniform(base_point.getx(), base_point.getx() + width);
     int y = random_generator.uniform(base_point.gety(), base_point.gety() + height);
 
+    #ifdef DEBUG_CONSOLE_OUTPUT
+    //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
     cout << "random point >> " << x << "  " << y << endl;
+    //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+    #endif
 
     point return_value;
     return_value.set_point(x, y);

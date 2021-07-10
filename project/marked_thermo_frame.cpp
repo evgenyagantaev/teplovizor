@@ -1,5 +1,10 @@
 #include "marked_thermo_frame.hpp"
 
+//#define DEBUG_CONSOLE_OUTPUT
+#define VISUAL_DEBUG
+#define MANUAL_MARK
+
+
 using namespace cv;
 using namespace std;
 
@@ -7,7 +12,12 @@ marked_thermo_frame::marked_thermo_frame(void)
 {
     manual_mark_counter = 0;
     marked = false;
+
+    #ifdef MANUAL_MARK
+    //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
     namedWindow("manual mark window", WINDOW_NORMAL);
+    //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+    #endif
     
 }
 
@@ -16,7 +26,11 @@ void marked_thermo_frame::set_mark_canvas(Mat value)
     mark_canvas = value;
     thermal_field = mark_canvas.clone();
 
+    #ifdef MANUAL_MARK
+    //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
     putText(mark_canvas, "mark left eye", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
+    //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+    #endif
 }
 
 Mat marked_thermo_frame::get_mark_canvas(void)
@@ -24,77 +38,101 @@ Mat marked_thermo_frame::get_mark_canvas(void)
     return mark_canvas;
 }
 
-/*
-void marked_thermo_frame::mark_frame_manually(current_thermo_frame frame_to_mark)
-{
-    //frame_to_mark = imread("face0.png", 0);
-    namedWindow("manual mark window", WINDOW_NORMAL);
-    
-    Mat mark_canvas = frame_to_mark.get_frame_mat();
-
-    imshow("manual mark window", mark_canvas);
-
-    
-}
-*/
 
 
 
 void marked_thermo_frame::mark_frame(cv::Mat frame_to_mark, int x, int y)
 {
-    //mark_frame_manually(frame_to_mark);
-
-    //Mat mark_canvas = frame_to_mark.get_frame_mat();
+    
 
     if(manual_mark_counter == 0) 
     {
         left_eye_center.set_point(x, y);
         manual_mark_counter++;
-        cout << "mark_frame >> left eye position = " << left_eye_center.getx() << "   " << left_eye_center.gety() << endl;
 
+        #ifdef DEBUG_CONSOLE_OUTPUT
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+        cout << "mark_frame >> left eye position = " << left_eye_center.getx() << "   " << left_eye_center.gety() << endl;
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+        #endif
+
+        #ifdef MANUAL_MARK
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
         mark_canvas = thermal_field.clone();
         putText(mark_canvas, "mark right eye", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
         draw_cross(mark_canvas, y, x, BLACK);
         imshow("manual mark window", mark_canvas);
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+        #endif
     }
     else if(manual_mark_counter == 1) 
     {
         right_eye_center.set_point(x, y);
         manual_mark_counter++;
-        cout << "mark_frame >> right eye position = " << right_eye_center.getx() << "   " << right_eye_center.gety() << endl;
 
+        #ifdef DEBUG_CONSOLE_OUTPUT
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+        cout << "mark_frame >> right eye position = " << right_eye_center.getx() << "   " << right_eye_center.gety() << endl;
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+        #endif
+
+        #ifdef MANUAL_MARK
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
         mark_canvas = thermal_field.clone();
         putText(mark_canvas, "mark ABB", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
         draw_cross(mark_canvas, y, x, BLACK);
         imshow("manual mark window", mark_canvas);
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+        #endif
     }
     else if(manual_mark_counter == 2) 
     {
         abb_base_pixel.set_position(x, y);
         manual_mark_counter++;
-        cout << "mark_frame >> abb position = " << abb_base_pixel.get_position().getx() << "   " << abb_base_pixel.get_position().gety() << endl;
-        abb_base_pixel.set_brightness((int)frame_to_mark.at<uchar>(y,x));
-        cout << "mark_frame >> abb brightness = " << abb_base_pixel.get_brightness() << endl;
-        abb_base_pixel.set_temperature(DEFAULT_ABB_TEMPERATURE);
-        cout << "mark_frame >> abb temperature = " << abb_base_pixel.get_temperature() << endl;
 
+        abb_base_pixel.set_brightness((int)frame_to_mark.at<uchar>(y,x));
+        abb_base_pixel.set_temperature(DEFAULT_ABB_TEMPERATURE);
+
+        #ifdef DEBUG_CONSOLE_OUTPUT
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+        cout << "mark_frame >> abb position = " << abb_base_pixel.get_position().getx() << "   " << abb_base_pixel.get_position().gety() << endl;
+        cout << "mark_frame >> abb brightness = " << abb_base_pixel.get_brightness() << endl;
+        cout << "mark_frame >> abb temperature = " << abb_base_pixel.get_temperature() << endl;
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+        #endif
+
+        #ifdef MANUAL_MARK
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
         mark_canvas = thermal_field.clone();
         putText(mark_canvas, "mark background", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
         draw_cross(mark_canvas, y, x, BLACK);
         imshow("manual mark window", mark_canvas);
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+        #endif
     }
     else if(manual_mark_counter == 3) 
     {
         background_base_pixel.set_position(x, y);
         manual_mark_counter = 0;
-        cout << "mark_frame >> abb position = " << background_base_pixel.get_position().getx() << "   " << background_base_pixel.get_position().gety() << endl;
+        
         background_base_pixel.set_brightness((int)frame_to_mark.at<uchar>(y,x));
-        cout << "mark_frame >> background brightness = " << background_base_pixel.get_brightness() << endl;
         background_base_pixel.set_temperature(DEFAULT_BACKGROUND_TEMPERATURE);
-        cout << "mark_frame >> background temperature = " << background_base_pixel.get_temperature() << endl;
 
+        #ifdef DEBUG_CONSOLE_OUTPUT
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+        cout << "mark_frame >> abb position = " << background_base_pixel.get_position().getx() << "   " << background_base_pixel.get_position().gety() << endl;
+        cout << "mark_frame >> background brightness = " << background_base_pixel.get_brightness() << endl;
+        cout << "mark_frame >> background temperature = " << background_base_pixel.get_temperature() << endl;
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+        #endif
+
+        #ifdef MANUAL_MARK
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
         draw_cross(mark_canvas, y, x, BLACK);
         imshow("manual mark window", mark_canvas);
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+        #endif
+
 
         converter.calibrate(abb_base_pixel.get_brightness(), abb_base_pixel.get_temperature(), 
                             background_base_pixel.get_brightness(), background_base_pixel.get_temperature());
@@ -145,26 +183,39 @@ double marked_thermo_frame::right_eye_detect_temperature()
 
 double marked_thermo_frame::detect_temperature(rect_thermal_spot *spot, thermo_pixel_vector *claster)
 {
-
+    #ifdef VISUAL_DEBUG
+    //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
     mark_canvas = thermal_field.clone();
     putText(mark_canvas, "primary layer random points", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
     imshow("manual mark window", mark_canvas);
     waitKey(100);
+    //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+    #endif
 
     int i;
     for(i=0; i<PRIMARY_RANDOM_POINTS_NUMBER; i++)
     {
         
         point random_point = (*spot).generate();
+        
+        #ifdef VISUAL_DEBUG
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
         draw_cross(mark_canvas, random_point.gety(), random_point.getx(), BLACK);
         imshow("manual mark window", mark_canvas);
         waitKey(700);
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+        #endif
 
         thermo_pixel random_pixel;
         random_pixel.set_position(random_point.getx(), random_point.gety());
         random_pixel.set_brightness((int)thermal_field.at<uchar>(random_point.gety(),random_point.getx()));
         random_pixel.set_temperature(converter.convert(random_pixel.get_brightness()));
+
+        #ifdef DEBUG_CONSOLE_OUTPUT
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
         cout << " >> " << random_pixel.get_temperature() << " << " << endl;
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+        #endif
 
         if(range.check(random_pixel.get_temperature()))
         {
@@ -173,12 +224,14 @@ double marked_thermo_frame::detect_temperature(rect_thermal_spot *spot, thermo_p
     }
 
     
-
-    
+    #ifdef VISUAL_DEBUG
+    //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
     waitKey(2000);
     mark_canvas = thermal_field.clone();
     imshow("manual mark window", mark_canvas);
     waitKey(100);
+    //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+    #endif
     
 
     if((*claster).get_current_length() >= SECONDARY_BASES_NUMBER)
@@ -191,6 +244,7 @@ double marked_thermo_frame::detect_temperature(rect_thermal_spot *spot, thermo_p
             secondary_layer_bases.add_pixel((*claster).get_pixel(i));
         }
 
+        #ifdef VISUAL_DEBUG
         //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
         mark_canvas = thermal_field.clone();
         imshow("manual mark window", mark_canvas);
@@ -230,13 +284,18 @@ double marked_thermo_frame::detect_temperature(rect_thermal_spot *spot, thermo_p
         imshow("manual mark window", mark_canvas);
         waitKey(100);
         //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+        #endif
 
         for(i=0; i<SECONDARY_BASES_NUMBER; i++)
         {
             int x = secondary_layer_bases.get_pixel(i).get_position().getx();
             int y = secondary_layer_bases.get_pixel(i).get_position().gety();
 
+            #ifdef DEBUG_CONSOLE_OUTPUT
+            //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
             cout << i << " >> secondary base " << endl;
+            //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+            #endif
 
             int width = (int)(eye_spot_width / 2);
             int height = width;
@@ -252,33 +311,54 @@ double marked_thermo_frame::detect_temperature(rect_thermal_spot *spot, thermo_p
             {
                 
                 point random_point = (*spot).generate();
+
+                #ifdef VISUAL_DEBUG
+                //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
                 draw_cross(mark_canvas, random_point.gety(), random_point.getx(), BLACK);
                 imshow("manual mark window", mark_canvas);
                 waitKey(700);
+                //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+                #endif
 
                 thermo_pixel random_pixel;
                 random_pixel.set_position(random_point.getx(), random_point.gety());
                 random_pixel.set_brightness((int)thermal_field.at<uchar>(random_point.gety(),random_point.getx()));
                 random_pixel.set_temperature(converter.convert(random_pixel.get_brightness()));
+
+                #ifdef DEBUG_CONSOLE_OUTPUT
+                //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
                 cout << " >> secondary random " << random_pixel.get_temperature() << " << " << endl;
+                //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+                #endif
 
                 if(range.check(random_pixel.get_temperature()))
                 {
                     (*claster).add_pixel(random_pixel);
+
+                    #ifdef DEBUG_CONSOLE_OUTPUT
+                    //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
                     cout << "claster length = " << (*claster).get_current_length() << endl;
+                    //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+                    #endif
                 } 
                  
             }
 
+            #ifdef VISUAL_DEBUG
+            //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
             waitKey(2000);
             mark_canvas = thermal_field.clone();
             putText(mark_canvas, "secondary layer random points", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
             imshow("manual mark window", mark_canvas);
             waitKey(100);
+            //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+            #endif
             
 
         }//end   for(i=0; i<SECONDARY_BASES_NUMBER; i++)
 
+        #ifdef VISUAL_DEBUG
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
         mark_canvas = thermal_field.clone();
         putText(mark_canvas, "two layers claster", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
 
@@ -290,6 +370,8 @@ double marked_thermo_frame::detect_temperature(rect_thermal_spot *spot, thermo_p
             imshow("manual mark window", mark_canvas);
             waitKey(700);
         }
+        //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+        #endif
     }
 
     double temperature = 0;

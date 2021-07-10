@@ -2,6 +2,8 @@
 
 using namespace std;
 
+//#define DEBUG_CONSOLE_OUTPUT
+
 thermo_pixel_vector::thermo_pixel_vector()
 {
     current_length =0;
@@ -31,12 +33,16 @@ void thermo_pixel_vector::add_pixel(thermo_pixel value)
 
     current_length++;
 
+    #ifdef DEBUG_CONSOLE_OUTPUT
+    //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
     int i;
     for(i=0; i<current_length; i++)
     {
         cout << " >> " << vector[i].get_temperature();
     }
     cout << endl;
+    //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+    #endif
 }
 
 void thermo_pixel_vector::cut(int value)
