@@ -9,7 +9,7 @@
 #include "brightness_to_temperature_converter.hpp"
 #include "temperature_range.hpp"
 
-#define TPV_LENGTH 64
+#define TPV_LENGTH 128
 
 class thermo_pixel_vector
 {

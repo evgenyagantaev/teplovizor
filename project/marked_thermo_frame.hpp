@@ -22,20 +22,21 @@
 
 #define EYE_WIDTH_COEFF  (3.0 / 8.0)
 #define EYE_HEIGHT_COEFF (3.0 / 8.0)
+#define AUX_COEFF (1.0 / 8.0)
 
-#define PRIMARY_RANDOM_POINTS_NUMBER 8
-#define SECONDARY_RANDOM_POINTS_NUMBER 3
-#define SECONDARY_BASES_NUMBER 3
+#define PRIMARY_RANDOM_POINTS_NUMBER 23
+#define SECONDARY_RANDOM_POINTS_NUMBER 7
+#define SECONDARY_BASES_NUMBER 5
 
-#define HEAD_CUT 1
-#define CLASTER_BODY 7
+#define HEAD_CUT 2
+#define CLASTER_BODY 9
 
 
 
 
 class marked_thermo_frame
 {
-private:
+private: 
 
     point left_eye_center;
     point right_eye_center;
@@ -43,9 +44,11 @@ private:
     thermo_pixel background_base_pixel;
     thermo_pixel_vector left_eye_claster;
     thermo_pixel_vector right_eye_claster;
+    thermo_pixel_vector forehead_claster;
     thermo_pixel_vector secondary_layer_bases;
     rect_thermal_spot left_eye_spot;
     rect_thermal_spot right_eye_spot;
+    rect_thermal_spot forehead_spot;
 
     temperature_range range;
 
@@ -61,6 +64,10 @@ private:
     int eye_spot_height;
     int eye_spot_base_horizontal_offset;
     int eye_spot_base_vertical_offset;
+    int forehead_spot_width;
+    int forehead_spot_height;
+    int forehead_spot_base_horizontal_offset;
+    int forehead_spot_base_vertical_offset;
 
     bool marked;
 
@@ -87,6 +94,7 @@ public:
 
     double left_eye_detect_temperature();
     double right_eye_detect_temperature();
+    double forehead_detect_temperature();
     
         
 };

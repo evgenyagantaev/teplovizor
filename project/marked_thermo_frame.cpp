@@ -181,6 +181,15 @@ double marked_thermo_frame::right_eye_detect_temperature()
     return detect_temperature(&right_eye_spot, &right_eye_claster);
 }
 
+double marked_thermo_frame::forehead_detect_temperature()
+{
+    forehead_spot.set_base(right_eye_center.getx() - eyes_span * AUX_COEFF, right_eye_center.gety() - eyes_span * (1+AUX_COEFF));
+    forehead_spot.set_width(eyes_span * (1 + 2*AUX_COEFF));
+    forehead_spot.set_height((int)(eyes_span * 5 / 8));
+
+    return detect_temperature(&forehead_spot, &forehead_claster);
+}
+
 
 double marked_thermo_frame::detect_temperature(rect_thermal_spot *spot, thermo_pixel_vector *claster)
 {
@@ -233,6 +242,14 @@ double marked_thermo_frame::detect_temperature(rect_thermal_spot *spot, thermo_p
     waitKey(100);
     //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
     #endif
+
+    int width = (int)((*spot).get_width() / 2);
+    int height = (int)((*spot).get_height() / 2);
+    int horizontal_offset = (int)(width / 2);
+    int vertical_offset = (int)(height / 2);
+    (*spot).set_width(width);
+    (*spot).set_height(height);
+
     
     secondary_layer_detect(spot, claster); // second layer
 
@@ -258,6 +275,10 @@ void marked_thermo_frame::secondary_layer_detect(rect_thermal_spot *spot, thermo
 {
     if((*claster).get_current_length() >= SECONDARY_BASES_NUMBER)
     {
+        int width = (*spot).get_width();
+        int height = (*spot).get_height();
+        int horizontal_offset = (int)(width / 2);
+        int vertical_offset = (int)(height / 2);
 
         secondary_layer_bases.clean();
         int i;
@@ -312,6 +333,7 @@ void marked_thermo_frame::secondary_layer_detect(rect_thermal_spot *spot, thermo
         {
             int x = secondary_layer_bases.get_pixel(i).get_position().getx();
             int y = secondary_layer_bases.get_pixel(i).get_position().gety();
+            (*spot).set_base(x - horizontal_offset, y - vertical_offset);
 
             #ifdef DEBUG_CONSOLE_OUTPUT
             //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
@@ -319,15 +341,7 @@ void marked_thermo_frame::secondary_layer_detect(rect_thermal_spot *spot, thermo
             //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
             #endif
 
-            int width = (int)(eye_spot_width / 2);
-            int height = width;
-            int horizontal_offset = (int)(width / 2);
-            int vertical_offset = horizontal_offset;
-
-            (*spot).set_base(x - horizontal_offset, y - vertical_offset);
-            (*spot).set_width(width);
-            (*spot).set_height(height);
-
+            
             int j;
             for(j=0; j<SECONDARY_RANDOM_POINTS_NUMBER; j++)
             {
@@ -385,7 +399,7 @@ void marked_thermo_frame::secondary_layer_detect(rect_thermal_spot *spot, thermo
         putText(mark_canvas, "secondary layer claster", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
 
         int k;
-        for(k=0; k<PRIMARY_RANDOM_POINTS_NUMBER; k++)
+        for(k=0; k<(HEAD_CUT +CLASTER_BODY); k++)
         {
             point cross_position = (*claster).get_pixel(k).get_position();
             draw_cross(mark_canvas, cross_position.gety(), cross_position.getx(), BLACK);
