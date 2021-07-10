@@ -3,6 +3,7 @@
 //#define DEBUG_CONSOLE_OUTPUT
 #define VISUAL_DEBUG
 #define MANUAL_MARK
+#define THREE_LAYERS
 
 
 using namespace cv;
@@ -233,7 +234,28 @@ double marked_thermo_frame::detect_temperature(rect_thermal_spot *spot, thermo_p
     //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
     #endif
     
+    secondary_layer_detect(spot, claster); // second layer
 
+    #ifdef THREE_LAYERS
+    secondary_layer_detect(spot, claster); // third layer
+    #endif
+
+    double temperature = 0;
+    int index = HEAD_CUT;
+    while (index < (HEAD_CUT + CLASTER_BODY) && (index < (*claster).get_current_length()))
+    {
+        temperature += (*claster).get_pixel(index).get_temperature();
+        index++;
+    }
+    temperature /= CLASTER_BODY;
+    
+    return temperature;
+    
+}
+
+
+void marked_thermo_frame::secondary_layer_detect(rect_thermal_spot *spot, thermo_pixel_vector *claster)
+{
     if((*claster).get_current_length() >= SECONDARY_BASES_NUMBER)
     {
 
@@ -360,7 +382,7 @@ double marked_thermo_frame::detect_temperature(rect_thermal_spot *spot, thermo_p
         #ifdef VISUAL_DEBUG
         //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
         mark_canvas = thermal_field.clone();
-        putText(mark_canvas, "two layers claster", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
+        putText(mark_canvas, "secondary layer claster", Point(30,30), FONT_HERSHEY_DUPLEX, 0.7, Scalar(0,0,0), 2);
 
         int k;
         for(k=0; k<PRIMARY_RANDOM_POINTS_NUMBER; k++)
@@ -373,16 +395,4 @@ double marked_thermo_frame::detect_temperature(rect_thermal_spot *spot, thermo_p
         //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
         #endif
     }
-
-    double temperature = 0;
-    int index = HEAD_CUT;
-    while (index < (HEAD_CUT + CLASTER_BODY) && (index < (*claster).get_current_length()))
-    {
-        temperature += (*claster).get_pixel(index).get_temperature();
-        index++;
-    }
-    temperature /= CLASTER_BODY;
-    
-    return temperature;
-    
 }

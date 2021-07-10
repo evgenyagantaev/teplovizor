@@ -65,6 +65,7 @@ private:
     bool marked;
 
     double detect_temperature(rect_thermal_spot *spot, thermo_pixel_vector *claster);
+    void secondary_layer_detect(rect_thermal_spot *spot, thermo_pixel_vector *claster);
 
     //***
 

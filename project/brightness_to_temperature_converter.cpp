@@ -1,5 +1,7 @@
 #include "brightness_to_temperature_converter.hpp"
 
+//#define DEBUG_CONSOLE_OUTPUT
+
 using namespace std;
 
 
@@ -14,7 +16,11 @@ void brightness_to_temperature_converter::calibrate(int abb_brigthness, double a
     K = (bg_temp - abb_temp)/(bg_br - abb_br);
     T0 = abb_temp - K * abb_br;
 
+    #ifdef DEBUG_CONSOLE_OUTPUT
+    //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
     cout << "converter calibrated T0 = " << T0 << ", K = " << K << endl;
+    //DEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUGDEBUG
+    #endif
 }
 
 double brightness_to_temperature_converter::convert(int brightness)
